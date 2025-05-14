@@ -11,9 +11,9 @@ import Foundation
 
 // MARK: - TrendingMovieModel
 struct TrendingMovieModel: Codable {
-    let results: [Movie]?
-    let meta: WelcomeMeta?
-    let links: WelcomeLinks?
+    var results: [Movie]?
+    var meta: WelcomeMeta?
+    var links: WelcomeLinks?
     
     enum CodingKeys: String, CodingKey {
         case results = "data"

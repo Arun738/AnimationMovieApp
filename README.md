@@ -20,6 +20,7 @@ MovieApp is an iOS application that allows users to explore and discover popular
 - **Swift**
 - **UIKit**
 - **URLSession** for networking
+- **MVVM** 
 - **Kitsu API** for fetching anime movie data
 - **Auto Layout** for responsive UI
 
@@ -47,6 +48,15 @@ GET https://kitsu.io/api/edge/anime
   <img src="./Public/Main_Screen.png" alt="Main Screen" width="300" />
   <img src="./Public/Details_Screen.png" alt="Details Screen" width="300" />
 </p>
+
+## Unit Testing
+The project includes unit tests to ensure the reliability and correctness of core business logic, especially the data fetching and transformation handled by the MainViewModel.
+
+- **API Integration**: Verifies that data fetched from the anime API is parsed and mapped to cell view models correctly.
+- **Movie Retrieval**: Confirms that a movie is correctly retrieved from the stored list based on its ID.
+
+All test cases related to MainViewModel are located in:
+MovieAppTests/MainViewTest.swift
 
 ## License
 

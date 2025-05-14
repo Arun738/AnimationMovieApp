@@ -6,17 +6,19 @@
 //
 
 import Foundation
-
+ 
 enum NetworkError: Error {
     case urlError
     case canNotParseData
 }
-
+ 
 public class APICaller {
     
-    static func getTrendingMovies(completionHandler: @escaping (APIResult<TrendingMovieModel, NetworkError>) -> Void) {
-        let urlString = NetworkConstant.shared.serverAddress + "/api/edge/anime"
+    static func getTrendingMovies(currentOffset: Int, limit: Int, completionHandler: @escaping (APIResult<TrendingMovieModel, NetworkError>) -> Void) {
+      
+        let urlString = NetworkConstant.shared.serverAddress + "/api/edge/anime?page[limit]=\(limit)&page[offset]=\(currentOffset)"
         
+        print("My Api ============ \(urlString)")
         guard let url = URL(string: urlString) else {
             completionHandler(.failure(.urlError))
             return
@@ -34,9 +36,8 @@ public class APICaller {
         }.resume()
     }
 }
-
+ 
 enum APIResult<Success, Failure> where Failure: Error {
     case success(Success)
     case failure(Failure)
 }
-

@@ -10,7 +10,7 @@ import SDWebImage
 
 class DetailsMovieViewController: UIViewController {
 
-    //IBOutlets:
+    //MARK: - IBOutlets
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!

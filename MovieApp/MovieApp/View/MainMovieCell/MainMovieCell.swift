@@ -20,7 +20,7 @@ class MainMovieCell: UITableViewCell {
         UINib(nibName: "MainMovieCell", bundle: nil)
     }
     
-    //IBOutlets:
+    //MARK: - IBOutlets
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var movieImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -29,18 +29,19 @@ class MainMovieCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-//        backView.addBorder(color: .label, width: 1)
-//        backView.round()
-//        backView.backgroundColor = .systemGray5
-//        
-//        movieImageView.round(5)
+        DispatchQueue.main.async {
+            self.movieImageView.startShimmerEffect()
+        }
     }
     
     func setupCell(viewModel: MovieTableCellViewModel) {
         self.nameLabel.text = viewModel.title
         self.dateLabel.text = viewModel.date
         self.rateLabel.text = viewModel.rating
-        self.movieImageView.sd_setImage(with: viewModel.imageUrl)
+
+        self.movieImageView.sd_setImage(with: viewModel.imageUrl, placeholderImage: nil, options: [], completed: { [weak self] _, _, _, _ in
+            self?.movieImageView.stopShimmerEffect()
+        })
     }
 
 }

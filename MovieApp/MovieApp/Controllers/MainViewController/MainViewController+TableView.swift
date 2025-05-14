@@ -7,13 +7,12 @@
 
 import Foundation
 import UIKit
-
+ 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func setupTableView() {
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
         self.tableView.backgroundColor = .clear
         
         self.registerCells()
@@ -55,5 +54,20 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let movieID = cellDataSource[indexPath.row].id
         self.openDetail(movieID: Int(movieID))
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+       
+        guard let scrollView = self.tableView,
+              (scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height,
+              self.viewModel.pagination.isLastPage == false,
+              self.viewModel.isLoading.value == false
+        else {
+            return
+        }
+        
+        viewModel.pagination.currentPage = self.viewModel.pagination.currentPage+1
+        viewModel.getData()
+        
     }
 }

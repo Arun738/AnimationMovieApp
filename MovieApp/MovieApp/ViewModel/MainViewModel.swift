@@ -10,6 +10,7 @@ import Foundation
 class MainViewModel {
     
     var isLoading: Observable<Bool> = Observable(false)
+    var pagination = PaginationModel()
     var cellDataSource: Observable<[MovieTableCellViewModel]> = Observable(nil)
     var dataSource: TrendingMovieModel?
     
@@ -26,13 +27,21 @@ class MainViewModel {
             return
         }
         isLoading.value = true
-        APICaller.getTrendingMovies { [weak self] result in
+
+        APICaller.getTrendingMovies(currentOffset: pagination.offset, limit: pagination.limit) { [weak self] result in
             self?.isLoading.value = false
             
             switch result {
             case .success(let data):
-                self?.dataSource = data
+                self?.pagination.isLastPage = data.links?.next == nil || data.links?.next?.isEmpty ?? true
+                
+                if self?.pagination.currentPage == 0 {
+                    self?.dataSource = data
+                } else {
+                    self?.dataSource?.results?.append(contentsOf: data.results ?? [])
+                }
                 self?.mapCellData()
+ 
             case .failure(let error):
                 print("Error: \(error)")
             }
@@ -58,4 +67,8 @@ class MainViewModel {
         }
         return movie
     }
+    
+  
 }
+
+

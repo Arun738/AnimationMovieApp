@@ -6,12 +6,11 @@
 //
 
 import UIKit
-
+ 
 class MainViewController: UIViewController {
     
-    //IBOutlet:
+    //MARK: - IBOutlet
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var activityIndıcator: UIActivityIndicatorView!
     
     //ViewModel:
     var viewModel: MainViewModel = MainViewModel()
@@ -19,9 +18,12 @@ class MainViewController: UIViewController {
     //Variables:
     var cellDataSource: [MovieTableCellViewModel] = []
     
+    //Constant:
+    let footerIndicator = UIActivityIndicatorView(style: .medium)
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+ 
         configView()
         bindViewModel()
     }
@@ -37,9 +39,8 @@ class MainViewController: UIViewController {
         self.view.backgroundColor = .systemBackground
         
         setupTableView()
+        configureTableFooter()
     }
-    
-    
     
     func bindViewModel() {
         viewModel.isLoading.bind { [weak self] isLoading in
@@ -49,9 +50,11 @@ class MainViewController: UIViewController {
             
             DispatchQueue.main.async {
                 if isLoading {
-                    self.activityIndıcator.startAnimating()
+                    self.footerIndicator.startAnimating()
+                    self.tableView.tableFooterView = self.footerIndicator
                 } else {
-                    self.activityIndıcator.stopAnimating()
+                    self.footerIndicator.stopAnimating()
+                    self.tableView.tableFooterView = nil
                 }
             }
         }
@@ -74,5 +77,12 @@ class MainViewController: UIViewController {
         DispatchQueue.main.async {
             self.navigationController?.pushViewController(detailsController, animated: true)
         }
+    }
+    
+    private func configureTableFooter() {
+        footerIndicator.color = .black
+        footerIndicator.hidesWhenStopped = true
+        footerIndicator.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 44)
+        tableView.tableFooterView = footerIndicator
     }
 }
